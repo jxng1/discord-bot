@@ -1,10 +1,14 @@
 'use strict'
 
 const Discord = require('discord.js'); // makes sure that it requires discord.js
-
 const client = new Discord.Client(); // creating the Discord bot as a client
+require('dotenv-flow').config();
 
-const prefix = '-';
+const config = {
+  token: process.env.TOKEN,
+  owner: process.env.OWNER,
+  prefix: process.env.PREFIX
+};
 
 const fs = require('fs');
 
@@ -23,10 +27,10 @@ client.once('ready', () => {
 
 client.on('message', message => {
 // if the message doesn't start with a prefix or isn't the bot itself, just break off
-  if (!message.content.startsWith(prefix) || message.author.bot) { return; }
+  if (!message.content.startsWith(config.prefix) || message.author.bot) { return; }
 
 // splicing commands e.g. -play xyz will mean that it gets split into ''-play', 'xyz'
-  const args = message.content.slice(prefix.length).split(/ +/);
+  const args = message.content.slice(config.prefix.length).split(/ +/);
   const command = args.shift().toLowerCase(); // ensures commands are in lowercase
 
 // COMMANDS block: better implementation
@@ -38,5 +42,4 @@ client.on('message', message => {
 
 });
 
-// make sure to put this at the END!
-client.login('NzcwMDY0MzY4ODk2MzExMzI3.X5YIVA.c4kAVqJAqxhjRKg6aBTRgeghg9g'); // might need to make a secret file?
+client.login(config.token);
